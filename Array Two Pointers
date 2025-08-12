@@ -1,0 +1,243 @@
+1. Reverse an Array
+📌 Idea: Start with one pointer at the beginning (left) and one at the end (right), swap until they meet.
+
+          int[] arr = {1, 2, 3, 4, 5};
+          int left = 0, right = arr.length - 1;
+          
+          while (left < right) {
+              int temp = arr[left];
+              arr[left] = arr[right];
+              arr[right] = temp;
+              left++;
+              right--;
+          }
+          System.out.println(Arrays.toString(arr)); // [5, 4, 3, 2, 1]
+
+2. Two Sum in Sorted Array (LeetCode #167)
+📌 Idea: Move pointers based on sum comparison.
+            
+            int[] nums = {2, 7, 11, 15};
+            int target = 9;
+            int left = 0, right = nums.length - 1;
+            
+            while (left < right) {
+                int sum = nums[left] + nums[right];
+                if (sum == target) {
+                    System.out.println(left + ", " + right); // 0, 1
+                    break;
+                } else if (sum < target) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+
+3. Remove Duplicates from Sorted Array (LeetCode #26)
+📌 Idea: Use one pointer for unique position and one for scanning.
+
+          int[] nums = {1, 1, 2, 2, 3};
+          int i = 0; // points to last unique
+          for (int j = 1; j < nums.length; j++) {
+              if (nums[j] != nums[i]) {
+                  i++;
+                  nums[i] = nums[j];
+              }
+          }
+          System.out.println(i + 1); // New length: 3
+
+4. Move Zeroes to the End (LeetCode #283)
+📌 Idea: Use slow pointer for placing non-zero values.
+
+          int[] nums = {0, 1, 0, 3, 12};
+          int insertPos = 0;
+          
+          for (int num : nums) {
+              if (num != 0) nums[insertPos++] = num;
+          }
+          while (insertPos < nums.length) {
+              nums[insertPos++] = 0;
+          }
+          
+          System.out.println(Arrays.toString(nums)); // [1, 3, 12, 0, 0]
+
+5. Pair with Given Sum in Unsorted Array (After Sorting)
+📌 Idea: Sort first, then apply two pointers.
+
+          int[] arr = {8, 4, 2, 6};
+          int target = 10;
+          Arrays.sort(arr);
+          int left = 0, right = arr.length - 1;
+          
+          while (left < right) {
+              int sum = arr[left] + arr[right];
+              if (sum == target) {
+                  System.out.println(arr[left] + ", " + arr[right]);
+                  left++; right--;
+              } else if (sum < target) left++;
+              else right--;
+          }
+
+1. Container With Most Water (#11)
+
+        public int maxArea(int[] height) {
+            int left = 0, right = height.length - 1, max = 0;
+            while (left < right) {
+                int area = (right - left) * Math.min(height[left], height[right]);
+                max = Math.max(max, area);
+                if (height[left] < height[right]) left++;
+                else right--;
+            }
+            return max;
+        }
+
+2. Trapping Rain Water (#42)
+
+          public int trap(int[] height) {
+              int left = 0, right = height.length - 1;
+              int leftMax = 0, rightMax = 0, water = 0;
+              while (left < right) {
+                  if (height[left] < height[right]) {
+                      if (height[left] >= leftMax) leftMax = height[left];
+                      else water += leftMax - height[left];
+                      left++;
+                  } else {
+                      if (height[right] >= rightMax) rightMax = height[right];
+                      else water += rightMax - height[right];
+                      right--;
+                  }
+              }
+              return water;
+          }
+
+3. 3Sum (#15)
+
+        public List<List<Integer>> threeSum(int[] nums) {
+            Arrays.sort(nums);
+            List<List<Integer>> res = new ArrayList<>();
+            for (int i = 0; i < nums.length - 2; i++) {
+                if (i > 0 && nums[i] == nums[i - 1]) continue;
+                int left = i + 1, right = nums.length - 1;
+                while (left < right) {
+                    int sum = nums[i] + nums[left] + nums[right];
+                    if (sum == 0) {
+                        res.add(Arrays.asList(nums[i], nums[left], nums[right]));
+                        while (left < right && nums[left] == nums[left + 1]) left++;
+                        while (left < right && nums[right] == nums[right - 1]) right--;
+                        left++; right--;
+                    } else if (sum < 0) left++;
+                    else right--;
+                }
+            }
+            return res;
+        }
+
+4. Sort Colors (#75)
+          public void sortColors(int[] nums) {
+              int low = 0, mid = 0, high = nums.length - 1;
+              while (mid <= high) {
+                  if (nums[mid] == 0) {
+                      int temp = nums[low]; nums[low] = nums[mid]; nums[mid] = temp;
+                      low++; mid++;
+                  } else if (nums[mid] == 1) {
+                      mid++;
+                  } else {
+                      int temp = nums[mid]; nums[mid] = nums[high]; nums[high] = temp;
+                      high--;
+                  }
+              }
+          }
+
+5. Squares of a Sorted Array (#977)
+
+          public int[] sortedSquares(int[] nums) {
+              int left = 0, right = nums.length - 1;
+              int[] result = new int[nums.length];
+              int pos = nums.length - 1;
+              while (left <= right) {
+                  if (Math.abs(nums[left]) > Math.abs(nums[right])) {
+                      result[pos--] = nums[left] * nums[left];
+                      left++;
+                  } else {
+                      result[pos--] = nums[right] * nums[right];
+                      right--;
+                  }
+              }
+              return result;
+          }
+
+6. Valid Palindrome (#125
+
+          public boolean isPalindrome(String s) {
+              s = s.toLowerCase();
+              int left = 0, right = s.length() - 1;
+              while (left < right) {
+                  if (!Character.isLetterOrDigit(s.charAt(left))) { left++; continue; }
+                  if (!Character.isLetterOrDigit(s.charAt(right))) { right--; continue; }
+                  if (s.charAt(left) != s.charAt(right)) return false;
+                  left++; right--;
+              }
+              return true;
+          }
+
+7. Longest Mountain in Array (#845)
+
+           public int longestMountain(int[] arr) {
+              int n = arr.length, longest = 0;
+              for (int i = 1; i < n - 1; i++) {
+                  if (arr[i] > arr[i - 1] && arr[i] > arr[i + 1]) {
+                      int left = i, right = i;
+                      while (left > 0 && arr[left - 1] < arr[left]) left--;
+                      while (right < n - 1 && arr[right] > arr[right + 1]) right++;
+                      longest = Math.max(longest, right - left + 1);
+                  }
+              }
+              return longest;
+          }
+
+8. Minimum Size Subarray Sum (#209)
+
+          public int minSubArrayLen(int target, int[] nums) {
+              int left = 0, sum = 0, minLen = Integer.MAX_VALUE;
+              for (int right = 0; right < nums.length; right++) {
+                  sum += nums[right];
+                  while (sum >= target) {
+                      minLen = Math.min(minLen, right - left + 1);
+                      sum -= nums[left++];
+                  }
+              }
+              return minLen == Integer.MAX_VALUE ? 0 : minLen;
+          }
+
+9. Max Consecutive Ones III (#1004)
+
+          public int longestOnes(int[] nums, int k) {
+              int left = 0, maxLen = 0;
+              for (int right = 0; right < nums.length; right++) {
+                  if (nums[right] == 0) k--;
+                  while (k < 0) {
+                      if (nums[left] == 0) k++;
+                      left++;
+                  }
+                  maxLen = Math.max(maxLen, right - left + 1);
+              }
+              return maxLen;
+          }
+
+10. Rotate Array (#189)
+
+           public void rotate(int[] nums, int k) {
+              k %= nums.length;
+              reverse(nums, 0, nums.length - 1);
+              reverse(nums, 0, k - 1);
+              reverse(nums, k, nums.length - 1);
+          }
+          
+          private void reverse(int[] nums, int left, int right) {
+              while (left < right) {
+                  int temp = nums[left];
+                  nums[left] = nums[right];
+                  nums[right] = temp;
+                  left++; right--;
+              }
+          }
+
