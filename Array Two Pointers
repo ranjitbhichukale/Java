@@ -1,3 +1,14 @@
+Array Fundamentals
+Searching Algorithms
+Sorting Algorithms 📊
+Two Pointers Technique 👥
+Sliding Window Technique 🪟
+Prefix Sum & Cumulative Sum ➕
+Hashing with Arrays 🗂️
+Matrix (2D Array) Problems 🧮
+Kadane’s Algorithm ⚡
+Bit Manipulation in Arrays 🧩
+
 1. Reverse an Array
 📌 Idea: Start with one pointer at the beginning (left) and one at the end (right), swap until they meet.
 
